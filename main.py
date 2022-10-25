@@ -44,9 +44,3 @@ def create_item_for_user(
     user_id: int, goods: schemas.GoodsCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_goods(db=db, goods=goods, user_id=user_id)
-
-
-@app.get("/items/", response_model=list[schemas.Goods])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_goods(db, skip=skip, limit=limit)
-    return items
