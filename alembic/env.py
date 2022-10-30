@@ -8,7 +8,7 @@ from alembic import context
 from db.database import Base
 from config import settings
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:{settings.PASSWORD_DB}@{settings.HOST}/{settings.DB_NAME}"
+SQLALCHEMY_DATABASE_URL = settings.SQLALCHEMY_DATABASE_URI
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

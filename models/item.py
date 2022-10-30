@@ -11,8 +11,8 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    description = Column(String, index=True)
-    price = Column(DECIMAL, index=True)
+    description = Column(String, index=True, nullable=False)
+    price = Column(DECIMAL, index=True, nullable=False)
     time = Column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship("User", back_populates="items")
