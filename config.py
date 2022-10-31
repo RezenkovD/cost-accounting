@@ -2,6 +2,6 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    SQL: str
+    SQLALCHEMY_DATABASE_URI: str
 
 settings = Settings()
