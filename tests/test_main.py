@@ -49,6 +49,7 @@ def test_create_and_get_user_and_item(test_db):
             "description": "Redmi Buds 3",
             "price": 1299,
             "time": "2022-11-01T08:52:53.301000",
+            "category": "Household appliances"
         },
     )
     assert response.status_code == 200
@@ -67,6 +68,7 @@ def test_create_and_get_user_and_item(test_db):
             "id": 1,
             "price": 1299.0,
             "time": "2022-11-01T08:52:53.301000",
+            "category": "Household appliances",
             "user_id": 1,
         }
     ]
@@ -83,6 +85,7 @@ def test_create_and_get_user_and_item(test_db):
                     "description": "Redmi Buds 3",
                     "price": 1299.0,
                     "time": "2022-11-01T08:52:53.301000",
+                    "category": "Household appliances",
                     "id": 1,
                     "user_id": 1,
                 }
