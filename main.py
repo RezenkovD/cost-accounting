@@ -5,6 +5,8 @@ import schemas.item
 import crud.crud_item
 import schemas.user
 import crud.crud_user
+import schemas.category
+import crud.crud_category
 
 from db.database import SessionLocal
 
@@ -47,3 +49,14 @@ def create_item_for_user(
     user_id: int, item: schemas.item.ItemCreate, db: Session = Depends(get_db)
 ):
     return crud.crud_item.create_user_item(db=db, item=item, user_id=user_id)
+
+
+@app.post("/users/{user_id}/category/", response_model=schemas.category.Category)
+def create_category_for_user(
+    user_id: int,
+    category: schemas.category.CategoryCreate,
+    db: Session = Depends(get_db),
+):
+    return crud.crud_category.create_user_category(
+        db=db, category=category, user_id=user_id
+    )
