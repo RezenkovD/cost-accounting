@@ -44,12 +44,22 @@ def test_create_and_get_user_and_item(test_db):
     user_id = user["id"]
 
     response = client.post(
+        f"/users/{user_id}/category/",
+        json={"title": "Accessories"},
+    )
+    assert response.status_code == 200
+    category = response.json()
+    assert category["title"] == "Accessories"
+    assert category["user_id"] == user_id
+    category_id = category["id"]
+
+    response = client.post(
         f"/users/{user_id}/item/",
         json={
             "description": "Redmi Buds 3",
             "price": 1299,
             "time": "2022-11-01T08:52:53.301000",
-            "category": "Household appliances"
+            "category_id": f"{category_id}",
         },
     )
     assert response.status_code == 200
@@ -65,13 +75,29 @@ def test_create_and_get_user_and_item(test_db):
     assert user["items"] == [
         {
             "description": "Redmi Buds 3",
-            "id": 1,
-            "price": 1299.0,
+            "price": 1299,
             "time": "2022-11-01T08:52:53.301000",
-            "category": "Household appliances",
+            "id": 1,
             "user_id": 1,
+            "category": {"title": "Accessories", "id": 1, "user_id": 1},
         }
     ]
+    assert user["categories"] == [{"title": "Accessories", "id": 1, "user_id": 1}]
+    assert user == {
+        "email": "test@gmail.com",
+        "id": 1,
+        "items": [
+            {
+                "description": "Redmi Buds 3",
+                "price": 1299,
+                "time": "2022-11-01T08:52:53.301000",
+                "id": 1,
+                "user_id": 1,
+                "category": {"title": "Accessories", "id": 1, "user_id": 1},
+            }
+        ],
+        "categories": [{"title": "Accessories", "id": 1, "user_id": 1}],
+    }
 
     response = client.get(f"/users/")
     assert response.status_code == 200
@@ -83,12 +109,13 @@ def test_create_and_get_user_and_item(test_db):
             "items": [
                 {
                     "description": "Redmi Buds 3",
-                    "price": 1299.0,
+                    "price": 1299,
                     "time": "2022-11-01T08:52:53.301000",
-                    "category": "Household appliances",
                     "id": 1,
                     "user_id": 1,
+                    "category": {"title": "Accessories", "id": 1, "user_id": 1},
                 }
             ],
+            "categories": [{"title": "Accessories", "id": 1, "user_id": 1}],
         }
     ]
