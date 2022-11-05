@@ -14,6 +14,7 @@ class Item(Base):
     description = Column(String, index=True, nullable=False)
     price = Column(DECIMAL, index=True, nullable=False)
     time = Column(DateTime, default=datetime.datetime.utcnow)
-    category = Column(String, nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"))
 
     user = relationship("User", back_populates="items")
+    category = relationship("Category", back_populates="item")

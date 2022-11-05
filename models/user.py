@@ -12,3 +12,4 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
 
     items = relationship("Item", back_populates="user")
+    categories = relationship("Category", back_populates="user")
