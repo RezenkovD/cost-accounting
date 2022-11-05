@@ -3,6 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 from schemas.item import Item
+from schemas.category import Category
 
 
 class UserBase(BaseModel):
@@ -16,6 +17,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     items: List[Item] = []
+    categories: List[Category] = []
 
     class Config:
         orm_mode = True
