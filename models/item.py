@@ -1,4 +1,4 @@
-import datetime # but I am not sure why do we have it because there is also just user_id
+import datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DateTime
 from sqlalchemy.orm import relationship

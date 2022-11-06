@@ -21,10 +21,10 @@ def create_user_item(db: Session, item: ItemCreate, user_id: int):
         raise HTTPException(status_code=404, detail="Several users have the same category.")
     else:
         user = users[0]
-        if user.id == db_item.user_id:
-            db.add(db_item)
-            db.commit()
-            db.refresh(db_item)
-            return db_item
-        else:
-            raise HTTPException(status_code=404, detail="The user is not the owner of this category.")
+    if user.id == db_item.user_id:
+        db.add(db_item)
+        db.commit()
+        db.refresh(db_item)
+        return db_item
+    else:
+        raise HTTPException(status_code=404, detail="The user is not the owner of this category.")
