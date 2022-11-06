@@ -44,8 +44,8 @@ def test_create_and_get_user_and_item(test_db):
     user_id = user["id"]
 
     response = client.post(
-        f"/users/{user_id}/category/",
-        json={"title": "Accessories"},
+        f"/users/category/",
+        json={"title": "Accessories", "user_id": 1},
     )
     assert response.status_code == 200
     category = response.json()

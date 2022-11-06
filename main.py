@@ -51,12 +51,11 @@ def create_item_for_user(
     return crud.crud_item.create_user_item(db=db, item=item, user_id=user_id)
 
 
-@app.post("/users/{user_id}/category/", response_model=schemas.category.Category)
+@app.post("/users/category/", response_model=schemas.category.Category)
 def create_category_for_user(
-    user_id: int,
     category: schemas.category.CategoryCreate,
     db: Session = Depends(get_db),
 ):
     return crud.crud_category.create_user_category(
-        db=db, category=category, user_id=user_id
+        db=db, category=category
     )
