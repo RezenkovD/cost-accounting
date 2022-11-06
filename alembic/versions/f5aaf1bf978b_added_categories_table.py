@@ -1,8 +1,8 @@
 """Added categories table
 
-Revision ID: d352f1f0c26d
+Revision ID: f5aaf1bf978b
 Revises: 339bc09d2052
-Create Date: 2022-11-06 11:28:25.276255
+Create Date: 2022-11-06 14:15:01.995885
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd352f1f0c26d'
+revision = 'f5aaf1bf978b'
 down_revision = '339bc09d2052'
 branch_labels = None
 depends_on = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_categories_id'), 'categories', ['id'], unique=False)
     op.add_column('items', sa.Column('category_id', sa.Integer(), nullable=False))
-    op.create_foreign_key(None, 'items', 'categories', ['category_id'], ['id'])
+    op.create_foreign_key("fk_category_items", 'items', 'categories', ['category_id'], ['id'])
     # ### end Alembic commands ###
 
 
