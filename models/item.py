@@ -1,4 +1,4 @@
-import datetime
+import datetime # but I am not sure why do we have it because there is also just user_id
 
 from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DateTime
 from sqlalchemy.orm import relationship
@@ -14,7 +14,7 @@ class Item(Base):
     description = Column(String, index=True, nullable=False)
     price = Column(DECIMAL, index=True, nullable=False)
     time = Column(DateTime, default=datetime.datetime.utcnow)
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     user = relationship("User", back_populates="items")
-    category = relationship("Category", back_populates="item")
+    category = relationship("Category", back_populates="items")
