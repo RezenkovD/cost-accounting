@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from pydantic.schema import datetime
+from schemas.category import Category
 
 
 class ItemBase(BaseModel):
@@ -9,12 +10,13 @@ class ItemBase(BaseModel):
 
 
 class ItemCreate(ItemBase):
-    pass
+    category_id: int
 
 
 class Item(ItemBase):
     id: int
     user_id: int
+    category: Category
 
     class Config:
         orm_mode = True

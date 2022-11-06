@@ -62,6 +62,7 @@ def run_migrations_online() -> None:
     """
     from models.user import User
     from models.item import Item
+    from models.category import Category
     alembic_config = config.get_section(config.config_ini_section)
     alembic_config['sqlalchemy.url'] = settings.SQLALCHEMY_DATABASE_URI
     connectable = engine_from_config(
