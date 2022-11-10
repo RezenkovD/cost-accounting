@@ -7,7 +7,9 @@ import schemas.user
 import crud.crud_user
 import schemas.category
 import crud.crud_category
-
+import schemas.statistics
+import crud.crud_statistics
+import crud.crud_months_statistics
 from db.database import SessionLocal
 
 
@@ -56,6 +58,27 @@ def create_category_for_user(
     category: schemas.category.CategoryCreate,
     db: Session = Depends(get_db),
 ):
-    return crud.crud_category.create_user_category(
-        db=db, category=category
+    return crud.crud_category.create_user_category(db=db, category=category)
+
+
+@app.get(
+    "/users/{user_id}/statistics", response_model=schemas.statistics.Statistics
+)
+def get_stats(user_id: int, db: Session = Depends(get_db)):
+    statistics = crud.crud_statistics.get_user_statistics(db, user_id=user_id)
+    if statistics is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return statistics
+
+
+@app.get(
+    "/users/{user_id}/statistics/{month}",
+    response_model=schemas.statistics.Statistics,
+)
+def get_stats_month(user_id: int, month: int, db: Session = Depends(get_db)):
+    statistics_month = crud.crud_months_statistics.get_user_statistics(
+        db, user_id=user_id, month=month
     )
+    if statistics_month is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return statistics_month
