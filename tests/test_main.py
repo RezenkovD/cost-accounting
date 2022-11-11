@@ -119,3 +119,54 @@ def test_create_and_get_user_and_item(test_db):
             "categories": [{"title": "Accessories", "id": 1, "user_id": 1}],
         }
     ]
+
+    response = client.get(f"/users/{user_id}/statistics")
+    assert response.status_code == 200
+    statistics = response.json()
+    assert statistics == {
+        "email": "test@gmail.com",
+        "costs": 1299,
+        "number_purchases": 1,
+        "details": {
+            "Accessories": 1299.0,
+        },
+        "number_purchases_category": {
+            "Accessories": 1,
+        },
+    }
+
+    response = client.get(f"/users/{user_id}/statistics/11/2022")
+    assert response.status_code == 200
+    statistics = response.json()
+    assert statistics == {
+        "email": "test@gmail.com",
+        "costs": 1299,
+        "number_purchases": 1,
+        "details": {
+            "Accessories": 1299.0,
+        },
+        "number_purchases_category": {
+            "Accessories": 1,
+        },
+    }
+
+    response = client.get(f"/users/{user_id}/statistics/11/2021")
+    assert response.status_code == 422
+
+    response = client.get(f"/users/{user_id}/statistics/13/2022")
+    assert response.status_code == 422
+
+    response = client.get(f"/users/{user_id}/statistics/10/2022")
+    assert response.status_code == 200
+    statistics = response.json()
+    assert statistics == {
+        "email": "test@gmail.com",
+        "costs": 0,
+        "number_purchases": 0,
+        "details": {
+            "Accessories": 0,
+        },
+        "number_purchases_category": {
+            "Accessories": 0,
+        },
+    }
