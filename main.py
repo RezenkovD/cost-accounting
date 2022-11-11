@@ -1,15 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException, Path
 from sqlalchemy.orm import Session
-
-import schemas.item
-import crud.crud_item
-import schemas.user
-import crud.crud_user
-import schemas.category
-import crud.crud_category
-import schemas.statistics
-import crud.crud_statistics
-import crud.crud_months_statistics
+import schemas
+import crud
 from db.database import SessionLocal
 
 
