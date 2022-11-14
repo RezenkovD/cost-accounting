@@ -135,7 +135,7 @@ def test_create_and_get_user_and_item(test_db):
         },
     }
 
-    response = client.get(f"/users/{user_id}/statistics/11/2022")
+    response = client.get(f"/users/{user_id}/statistics/2022-11")
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
@@ -150,13 +150,13 @@ def test_create_and_get_user_and_item(test_db):
         },
     }
 
-    response = client.get(f"/users/{user_id}/statistics/11/2021")
+    response = client.get(f"/users/{user_id}/statistics/11-2021")
     assert response.status_code == 422
 
-    response = client.get(f"/users/{user_id}/statistics/13/2022")
+    response = client.get(f"/users/{user_id}/statistics/DROP DATABASE")
     assert response.status_code == 422
 
-    response = client.get(f"/users/{user_id}/statistics/10/2022")
+    response = client.get(f"/users/{user_id}/statistics/2021-10")
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
