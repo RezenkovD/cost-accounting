@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from models.user import User
-from models.statistics import Statistics
+from schemas.statistics import Statistics
 
 
 def get_user_statistics_for_month(db: Session, user_id: int, year_month: str):
@@ -24,11 +24,10 @@ def get_user_statistics_for_month(db: Session, user_id: int, year_month: str):
             all_costs += user.items[x].price
             number_purchases_category[user.items[x].category.title] += 1
             count_items_month += 1
-    user_stats = Statistics(
-        user.email,
-        all_costs,
-        count_items_month,
-        details_dict,
-        number_purchases_category,
-    )
+    user_stats = Statistics
+    user_stats.email = user.email
+    user_stats.costs = all_costs
+    user_stats.number_purchases = count_items_month
+    user_stats.details = details_dict
+    user_stats.number_purchases_category = number_purchases_category
     return user_stats
