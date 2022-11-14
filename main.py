@@ -3,9 +3,22 @@ from sqlalchemy.orm import Session
 import schemas
 import crud
 from db.database import SessionLocal
-
+from datetime import datetime
+import logging
 
 app = FastAPI()
+
+
+def transform_date_or_422(date_: str):
+    try:
+        transformed_date = datetime.strptime(date_, "%Y-%m").date().replace(day=1)
+    except ValueError:
+        logging.info(f"{date_} has incorrect date format")
+        raise HTTPException(
+            status_code=422,
+            detail=f"{date_} has incorrect date format, but should be YYYY-MM",
+        )
+    return transformed_date
 
 
 def get_db():
@@ -68,6 +81,7 @@ def get_stats_month(
     year_month: str,
     db: Session = Depends(get_db),
 ):
+    date = transform_date_or_422(year_month)
     statistics_month = crud.crud_statistics.get_user_statistics(
         db, user_id=user_id, year_month=year_month
     )
