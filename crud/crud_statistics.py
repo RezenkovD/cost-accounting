@@ -17,19 +17,19 @@ def get_user_statistics(db: Session, user_id: int, year_month: str = None):
     all_costs = 0
     if year_month is not None:
         count_items_month = 0
-    for x in range(number_purchases):
+    for item in user.items:
         if year_month is not None:
             if (
-                    user.items[x].time.strftime("%Y-%m") == year_month
+                    item.time.strftime("%Y-%m") == year_month
             ):
-                details_dict[user.items[x].category.title] += user.items[x].price
-                all_costs += user.items[x].price
-                number_purchases_category[user.items[x].category.title] += 1
+                details_dict[item.category.title] += item.price
+                all_costs += item.price
+                number_purchases_category[item.category.title] += 1
                 count_items_month += 1
         else:
-            details_dict[user.items[x].category.title] += user.items[x].price
-            all_costs += user.items[x].price
-            number_purchases_category[user.items[x].category.title] += 1
+            details_dict[item.category.title] += item.price
+            all_costs += item.price
+            number_purchases_category[item.category.title] += 1
     user_stats = Statistics
     user_stats.email = user.email
     user_stats.costs = all_costs

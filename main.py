@@ -10,6 +10,9 @@ app = FastAPI()
 
 
 def transform_date_or_422(date_: str):
+    """
+    '2021-01' -> datetime.date(2021, 01, 01) else raise HTTP_422
+    """
     try:
         transformed_date = datetime.strptime(date_, "%Y-%m").date().replace(day=1)
     except ValueError:
