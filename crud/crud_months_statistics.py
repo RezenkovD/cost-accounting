@@ -4,7 +4,7 @@ from models.user import User
 from models.statistics import Statistics
 
 
-def get_user_statistics_for_month(db: Session, user_id: int, month: int, year: int):
+def get_user_statistics_for_month(db: Session, user_id: int, year_month: str):
     user = db.query(User).filter_by(id=user_id).one_or_none()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -18,8 +18,7 @@ def get_user_statistics_for_month(db: Session, user_id: int, month: int, year: i
     all_costs = 0
     for x in range(number_purchases):
         if (
-            int(user.items[x].time.strftime("%m")) == month
-            and int(user.items[x].time.strftime("%Y")) == year
+            user.items[x].time.strftime("%Y-%m") == year_month
         ):
             details_dict[user.items[x].category.title] += user.items[x].price
             all_costs += user.items[x].price

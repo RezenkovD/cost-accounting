@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException, Path
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 import schemas
 import crud
@@ -60,16 +60,15 @@ def get_stats(user_id: int, db: Session = Depends(get_db)):
 
 
 @app.get(
-    "/users/{user_id}/statistics/{month}/{year}",
+    "/users/{user_id}/statistics/{year_month}",
     response_model=schemas.statistics.Statistics,
 )
 def get_stats_month(
     user_id: int,
-    month: int = Path(gt=0, lt=13),
-    year: int = Path(gt=2021, lt=2100),
+    year_month: str,
     db: Session = Depends(get_db),
 ):
     statistics_month = crud.crud_months_statistics.get_user_statistics_for_month(
-        db, user_id=user_id, month=month, year=year
+        db, user_id=user_id, year_month=year_month
     )
     return statistics_month
