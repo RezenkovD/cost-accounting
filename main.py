@@ -68,7 +68,7 @@ def get_stats_month(
     year_month: str,
     db: Session = Depends(get_db),
 ):
-    statistics_month = crud.crud_months_statistics.get_user_statistics_for_month(
+    statistics_month = crud.crud_statistics.get_user_statistics(
         db, user_id=user_id, year_month=year_month
     )
     return statistics_month
