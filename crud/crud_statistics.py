@@ -10,8 +10,8 @@ def get_user_statistics(db: Session, user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     number_purchases = len(user.items)
     list_categories = []
-    for x in range(len(user.categories)):
-        list_categories.append(user.categories[x].title)
+    for category in user.categories:
+        list_categories.append(category.title)
     details_dict = {category: 0 for category in list_categories}
     number_purchases_category = {category: 0 for category in list_categories}
     all_costs = 0

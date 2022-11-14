@@ -11,8 +11,8 @@ def get_user_statistics_for_month(db: Session, user_id: int, year_month: str):
     number_purchases = len(user.items)
     count_items_month = 0
     list_categories = []
-    for x in range(len(user.categories)):
-        list_categories.append(user.categories[x].title)
+    for category in user.categories:
+        list_categories.append(category.title)
     details_dict = {category: 0 for category in list_categories}
     number_purchases_category = {category: 0 for category in list_categories}
     all_costs = 0
