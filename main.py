@@ -4,12 +4,13 @@ import schemas
 import crud
 from db.database import SessionLocal
 from datetime import datetime
+from datetime import date
 import logging
 
 app = FastAPI()
 
 
-def transform_date_or_422(date_: str):
+def transform_date_or_422(date_: str) -> date:
     """
     '2021-01' -> datetime.date(2021, 01, 01) else raise HTTP_422
     """
@@ -76,16 +77,16 @@ def get_stats(user_id: int, db: Session = Depends(get_db)):
 
 
 @app.get(
-    "/users/{user_id}/statistics/{year_month}",
+    "/users/{user_id}/statistics/{filter_date}",
     response_model=schemas.statistics.Statistics,
 )
 def get_stats_month(
     user_id: int,
-    year_month: str,
+    filter_date: str,
     db: Session = Depends(get_db),
 ):
-    date = transform_date_or_422(year_month)
+    date_ = transform_date_or_422(filter_date)
     statistics_month = crud.crud_statistics.get_user_statistics(
-        db, user_id=user_id, year_month=date
+        db, user_id=user_id, filter_date=date_
     )
     return statistics_month

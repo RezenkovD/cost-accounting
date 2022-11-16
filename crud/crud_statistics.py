@@ -2,25 +2,25 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import extract
 from sqlalchemy import and_
-from pydantic.schema import datetime
+from pydantic.schema import date
 
 from models.user import User
 from models.item import Item
 from schemas.statistics import Statistics
 
 
-def get_user_statistics(db: Session, user_id: int, year_month: datetime = None):
+def get_user_statistics(db: Session, user_id: int, filter_date: date = None):
     user = db.query(User).filter_by(id=user_id).one_or_none()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    if year_month is not None:
+    if filter_date is not None:
         items = (
             db.query(Item)
             .filter(
                 and_(
                     Item.user_id == user_id,
-                    extract("year", Item.time) == year_month.year,
-                    extract("month", Item.time) == year_month.month,
+                    extract("year", Item.time) == filter_date.year,
+                    extract("month", Item.time) == filter_date.month,
                 )
             )
             .all()
