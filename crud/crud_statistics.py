@@ -45,10 +45,11 @@ def get_user_statistics(db: Session, user_id: int, filter_date: date = None):
         all_costs += item.price
         number_purchases_category[item.category.title] += 1
         number_purchases += 1
-    user_stats = Statistics
-    user_stats.email = user.email
-    user_stats.costs = all_costs
-    user_stats.number_purchases = number_purchases
-    user_stats.details = details_dict
-    user_stats.number_purchases_category = number_purchases_category
+    user_stats = Statistics(
+        email=user.email,
+        costs=all_costs,
+        number_purchases=number_purchases,
+        details=details_dict,
+        number_purchases_category=number_purchases_category,
+    )
     return user_stats
