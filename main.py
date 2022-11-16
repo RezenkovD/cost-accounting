@@ -86,6 +86,6 @@ def get_stats_month(
 ):
     date = transform_date_or_422(year_month)
     statistics_month = crud.crud_statistics.get_user_statistics(
-        db, user_id=user_id, year_month=year_month
+        db, user_id=user_id, year_month=date
     )
     return statistics_month
