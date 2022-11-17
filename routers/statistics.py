@@ -1,8 +1,7 @@
 from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy.orm import Session
 
-from datetime import datetime
-from datetime import date
+from datetime import datetime, date
 import logging
 
 import crud
