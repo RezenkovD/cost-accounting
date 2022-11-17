@@ -32,7 +32,6 @@ def test_create_category_for_user(test_db):
     category = response.json()
     assert category["title"] == "Accessories"
     assert category["user_id"] == 1
-    category_id_1 = category["id"]
 
     response = client.post(
         f"/users/category/",
@@ -42,4 +41,3 @@ def test_create_category_for_user(test_db):
     category = response.json()
     assert category["title"] == "Food"
     assert category["user_id"] == 1
-    category_id_2 = category["id"]
