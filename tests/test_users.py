@@ -1,25 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from main import app
 from db.database import get_db
 from db.database import Base
-from config import settings
-
-TEST_SQLALCHEMY_DATABASE_URI = settings.TEST_SQLALCHEMY_DATABASE_URI
-
-engine = create_engine(TEST_SQLALCHEMY_DATABASE_URI)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from db.test_database import engine, override_get_db
 
 
 @pytest.fixture()
@@ -58,6 +43,7 @@ def test_create_user(test_db):
 
 def test_read_user(test_db):
     from tests.test_items import test_create_item_for_user
+
     test_create_item_for_user(test_db)
 
     response = client.get(f"/users/1")
@@ -132,6 +118,7 @@ def test_read_user(test_db):
 
 def test_read_users(test_db):
     from tests.test_items import test_create_item_for_user
+
     test_create_item_for_user(test_db)
 
     response = client.get(f"/users/")
