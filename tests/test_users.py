@@ -1,4 +1,4 @@
-from tests.contest import client, test_db
+from tests.conftest import client, test_db
 
 
 def test_create_user(test_db):
