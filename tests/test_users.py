@@ -1,7 +1,7 @@
-from tests.conftest import client, test_db
+from tests.conftest import client, db
 
 
-def test_create_user(test_db):
+def test_create_user(db):
     response = client.post(
         "/users/", json={"email": "test@gmail.com", "password": "testA89"}
     )
@@ -23,10 +23,10 @@ def test_create_user(test_db):
     assert user_id_1 != user_id_2
 
 
-def test_read_user(test_db):
+def test_read_user(db):
     from tests.test_items import test_create_item_for_user
 
-    test_create_item_for_user(test_db)
+    test_create_item_for_user(db)
 
     response = client.get(f"/users/1")
     assert response.status_code == 200
@@ -98,10 +98,10 @@ def test_read_user(test_db):
     }
 
 
-def test_read_users(test_db):
+def test_read_users(db):
     from tests.test_items import test_create_item_for_user
 
-    test_create_item_for_user(test_db)
+    test_create_item_for_user(db)
 
     response = client.get(f"/users/")
     assert response.status_code == 200

@@ -8,7 +8,7 @@ from db.test_database import engine, override_get_db
 
 
 @pytest.fixture()
-def test_db():
+def db():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)

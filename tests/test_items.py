@@ -1,10 +1,10 @@
-from tests.conftest import client, test_db
+from tests.conftest import client, db
 
 
-def test_create_item_for_user(test_db):
+def test_create_item_for_user(db):
     from tests.test_categories import test_create_category_for_user
 
-    test_create_category_for_user(test_db)
+    test_create_category_for_user(db)
 
     response = client.post(
         f"/users/1/item/",

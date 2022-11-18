@@ -1,10 +1,10 @@
-from tests.conftest import client, test_db
+from tests.conftest import client, db
 
 
-def test_get_stats(test_db):
+def test_get_stats(db):
     from tests.test_items import test_create_item_for_user
 
-    test_create_item_for_user(test_db)
+    test_create_item_for_user(db)
 
     response = client.get(f"/users/1/statistics")
     assert response.status_code == 200
@@ -35,10 +35,10 @@ def test_get_stats(test_db):
     }
 
 
-def test_get_stats_month(test_db):
+def test_get_stats_month(db):
     from tests.test_items import test_create_item_for_user
 
-    test_create_item_for_user(test_db)
+    test_create_item_for_user(db)
 
     response = client.get(f"/users/1/statistics/2022-11")
     assert response.status_code == 200
