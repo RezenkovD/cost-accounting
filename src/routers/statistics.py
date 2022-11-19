@@ -4,10 +4,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime, date
 import logging
 
-import crud
-import schemas
-
-from db.database import get_db
+import src
+from src.db.database import get_db
 
 
 router = APIRouter(
@@ -31,15 +29,15 @@ def transform_date_or_422(date_: str) -> date:
     return transformed_date
 
 
-@router.get("/{user_id}/statistics", response_model=schemas.statistics.Statistics)
+@router.get("/{user_id}/statistics", response_model=src.schemas.statistics.Statistics)
 def get_stats(user_id: int, db: Session = Depends(get_db)):
-    statistics = crud.crud_statistics.get_user_statistics(db, user_id=user_id)
+    statistics = src.crud.crud_statistics.get_user_statistics(db, user_id=user_id)
     return statistics
 
 
 @router.get(
     "/{user_id}/statistics/{filter_date}",
-    response_model=schemas.statistics.Statistics,
+    response_model=src.schemas.statistics.Statistics,
 )
 def get_stats_month(
     user_id: int,
@@ -47,7 +45,7 @@ def get_stats_month(
     db: Session = Depends(get_db),
 ):
     date_ = transform_date_or_422(filter_date)
-    statistics_month = crud.crud_statistics.get_user_statistics(
+    statistics_month = src.crud.crud_statistics.get_user_statistics(
         db, user_id=user_id, filter_date=date_
     )
     return statistics_month

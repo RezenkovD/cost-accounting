@@ -2,13 +2,12 @@ from typing import Optional
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import extract
-from sqlalchemy import and_
+from sqlalchemy import extract, and_
 from pydantic.schema import date
 
-from models.user import User
-from models.item import Item
-from schemas.statistics import Statistics
+from src.models.user import User
+from src.models.item import Item
+from src.schemas.statistics import Statistics
 
 
 def get_user_statistics(db: Session, user_id: int, filter_date: Optional[date] = None):

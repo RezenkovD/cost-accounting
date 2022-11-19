@@ -5,8 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from db.database import Base
-from config import settings
+from src.db.database import Base
+from src.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -60,9 +60,6 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    from models.user import User
-    from models.item import Item
-    from models.category import Category
     alembic_config = config.get_section(config.config_ini_section)
     alembic_config['sqlalchemy.url'] = settings.SQLALCHEMY_DATABASE_URI
     connectable = engine_from_config(

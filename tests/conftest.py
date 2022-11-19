@@ -1,10 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from main import app
-from db.database import get_db
-from db.database import Base
-from db.test_database import engine, override_get_db
+from src.main import app
+from src.db.database import get_db
+from src.db.database import Base
+from src.db.test_database import engine, override_get_db
 
 
 @pytest.fixture()

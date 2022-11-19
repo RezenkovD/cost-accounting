@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from pydantic.schema import datetime
-from schemas.category import Category
+from src.schemas.category import Category
 
 
 class ItemBase(BaseModel):
