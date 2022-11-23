@@ -1,18 +1,15 @@
 import pytest
+
 from fastapi.testclient import TestClient
-
-from src.main import app
-from src.db.database import get_db
-from src.db.database import Base
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.config import settings
+from app.config import settings
+from app.db import Base, get_db
+from app.main import app as main_app
 
-SQLALCHEMY_DATABASE_URI = settings.SQLALCHEMY_DATABASE_URI
 
-engine = create_engine(SQLALCHEMY_DATABASE_URI)
+engine = create_engine(settings.SQLALCHEMY_DATABASE_URI)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -31,6 +28,6 @@ def db():
     Base.metadata.drop_all(bind=engine)
 
 
-app.dependency_overrides[get_db] = override_get_db
+main_app.dependency_overrides[get_db] = override_get_db
 
-client = TestClient(app)
+client = TestClient(main_app)

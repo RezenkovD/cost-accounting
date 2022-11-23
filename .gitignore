@@ -1,2 +1,9 @@
 .idea
 __pycache__/
+
+# To ignore result of tests
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover

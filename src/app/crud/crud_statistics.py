@@ -5,9 +5,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import extract, and_
 from pydantic.schema import date
 
-from src.models.user import User
-from src.models.item import Item
-from src.schemas.statistics import Statistics
+from app.models import Item, User
+from app.schemas import Statistics
 
 
 def get_user_statistics(db: Session, user_id: int, filter_date: Optional[date] = None):
