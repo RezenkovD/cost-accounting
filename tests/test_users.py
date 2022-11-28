@@ -1,4 +1,5 @@
 from tests.conftest import client, db
+from tests.test_items import test_create_item_for_user
 
 
 def test_create_user(db):
@@ -99,8 +100,6 @@ def test_read_user(db):
 
 
 def test_read_users(db):
-    from tests.test_items import test_create_item_for_user
-
     test_create_item_for_user(db)
 
     response = client.get(f"/users/")
