@@ -1,7 +1,8 @@
-from sqlalchemy.orm import Session
-from schemas.user import UserCreate
-from models.user import User
 import bcrypt
+from sqlalchemy.orm import Session
+
+from app.schemas import UserCreate
+from app.models import User
 
 
 def get_user(db: Session, user_id: int):

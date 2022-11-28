@@ -1,9 +1,8 @@
 from tests.conftest import client, db
+from tests.test_items import test_create_item_for_user
 
 
 def test_get_stats(db):
-    from tests.test_items import test_create_item_for_user
-
     test_create_item_for_user(db)
 
     response = client.get(f"/users/1/statistics")

@@ -2,8 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from schemas.item import Item
-from schemas.category import Category
+from app.schemas import Item, Category
 
 
 class UserBase(BaseModel):
