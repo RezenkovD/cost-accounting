@@ -1,4 +1,4 @@
-from tests.conftest import client, db
+from tests.conftest import client
 from tests.test_items import test_create_item_for_user
 
 
