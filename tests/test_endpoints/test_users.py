@@ -1,5 +1,5 @@
 from tests.conftest import client
-from tests.test_items import test_create_item_for_user
+from tests.test_endpoints.test_items import test_create_item_for_user
 
 
 def test_create_user(db):
@@ -25,7 +25,7 @@ def test_create_user(db):
 
 
 def test_read_user(db):
-    from tests.test_items import test_create_item_for_user
+    from tests.test_endpoints.test_items import test_create_item_for_user
 
     test_create_item_for_user(db)
 

@@ -1,5 +1,5 @@
 from tests.conftest import client
-from tests.test_items import test_create_item_for_user
+from tests.test_endpoints.test_items import test_create_item_for_user
 
 
 def test_get_stats(db):
@@ -35,7 +35,7 @@ def test_get_stats(db):
 
 
 def test_get_stats_month(db):
-    from tests.test_items import test_create_item_for_user
+    from tests.test_endpoints.test_items import test_create_item_for_user
 
     test_create_item_for_user(db)
 

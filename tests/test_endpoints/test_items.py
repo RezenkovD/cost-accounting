@@ -2,7 +2,7 @@ from tests.conftest import client
 
 
 def test_create_item_for_user(db):
-    from tests.test_categories import test_create_category_for_user
+    from tests.test_endpoints.test_categories import test_create_category_for_user
 
     test_create_category_for_user(db)
 
