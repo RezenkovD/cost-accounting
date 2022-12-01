@@ -2,7 +2,7 @@ import pytest
 
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app.config import settings
 from app.db import Base, get_db
@@ -11,6 +11,7 @@ from app.main import app as main_app
 
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URI)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+session = scoped_session(sessionmaker(bind=engine))
 
 
 def override_get_db():

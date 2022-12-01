@@ -1,10 +1,13 @@
-from tests.conftest import client, db
+from tests.conftest import client
+
+from tests.factories.users import UserFactory
+from tests.factories.categories import CategoryFactory
 
 
 def test_create_item_for_user(db):
-    from tests.test_categories import test_create_category_for_user
-
-    test_create_category_for_user(db)
+    user = UserFactory.create()
+    category_one = CategoryFactory.create(user_id=user.id, title="Accessories")
+    category_two = CategoryFactory.create(user_id=user.id, title="Food")
 
     response = client.post(
         f"/users/1/item/",
