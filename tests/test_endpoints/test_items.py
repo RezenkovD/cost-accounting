@@ -1,10 +1,14 @@
 from tests.conftest import client
 
+from tests.factories.users import UserFactory
+from tests.factories.categories import CategoryFactory
+
 
 def test_create_item_for_user(db):
-    from tests.test_endpoints.test_categories import test_create_category_for_user
+    user = UserFactory.create(id=1, email="test@gmail.com", hashed_password="test89A")
 
-    test_create_category_for_user(db)
+    category_one = CategoryFactory.create(id=1, user_id=1, title="Accessories")
+    category_two = CategoryFactory.create(id=2, user_id=1, title="Food")
 
     response = client.post(
         f"/users/1/item/",

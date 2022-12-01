@@ -1,10 +1,10 @@
 from tests.conftest import client
 
+from tests.factories.users import UserFactory
+
 
 def test_create_category_for_user(db):
-    from tests.test_endpoints.test_users import test_create_user
-
-    test_create_user(db)
+    user = UserFactory.create(id=1, email="test@gmail.com", hashed_password="test89A")
 
     response = client.post(
         f"/users/category/",
