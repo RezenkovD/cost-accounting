@@ -10,7 +10,6 @@ class ItemFactory(factory.alchemy.SQLAlchemyModelFactory):
         sqlalchemy_session = session
         sqlalchemy_session_persistence = "commit"
 
-    id = factory.Faker("id")
     user_id = factory.Faker("user_id")
     description = factory.Faker("title")
     price = factory.Faker("price")
