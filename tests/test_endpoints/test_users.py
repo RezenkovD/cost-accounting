@@ -25,9 +25,8 @@ def test_create_user(db):
 
 
 def test_read_user(db):
-    user_one = UserFactory.create(email="test@gmail.com")
-    user_two = UserFactory.create(email="test2@gmail.com")
-
+    user_one = UserFactory.create()
+    user_one_email = user_one.email
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")
 
@@ -56,7 +55,7 @@ def test_read_user(db):
     response = client.get(f"/users/1")
     assert response.status_code == 200
     user = response.json()
-    assert user["email"] == "test@gmail.com"
+    assert user["email"] == user_one_email
     assert user["items"] == [
         {
             "description": "Redmi Buds 3",
@@ -88,7 +87,7 @@ def test_read_user(db):
         {"title": "Food", "id": 2, "user_id": 1},
     ]
     assert user == {
-        "email": "test@gmail.com",
+        "email": user_one_email,
         "id": 1,
         "items": [
             {
@@ -126,7 +125,8 @@ def test_read_user(db):
 def test_read_users(db):
     user_one = UserFactory.create(email="test@gmail.com")
     user_two = UserFactory.create(email="test2@gmail.com")
-
+    user_one_email = user_one.email
+    user_two_email = user_two.email
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")
 
@@ -157,7 +157,7 @@ def test_read_users(db):
     users = response.json()
     assert users == [
         {
-            "email": "test@gmail.com",
+            "email": user_one_email,
             "id": 1,
             "items": [
                 {
@@ -191,7 +191,7 @@ def test_read_users(db):
             ],
         },
         {
-            "email": "test2@gmail.com",
+            "email": user_two_email,
             "id": 2,
             "items": [],
             "categories": [],

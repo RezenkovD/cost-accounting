@@ -5,9 +5,10 @@ from tests.factories.items import ItemFactory
 
 
 def test_get_stats(db):
-    user_one = UserFactory.create(email="test@gmail.com")
-    user_two = UserFactory.create(email="test2@gmail.com")
-
+    user_one = UserFactory.create()
+    user_two = UserFactory.create()
+    user_one_email = user_one.email
+    user_two_email = user_two.email
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")
 
@@ -37,7 +38,7 @@ def test_get_stats(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test@gmail.com",
+        "email": user_one_email,
         "costs": 1455,
         "number_purchases": 3,
         "details": {
@@ -54,7 +55,7 @@ def test_get_stats(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test2@gmail.com",
+        "email": user_two_email,
         "costs": 0,
         "number_purchases": 0,
         "details": {},
@@ -63,9 +64,10 @@ def test_get_stats(db):
 
 
 def test_get_stats_month(db):
-    user_one = UserFactory.create(email="test@gmail.com")
-    user_two = UserFactory.create(email="test2@gmail.com")
-
+    user_one = UserFactory.create()
+    user_two = UserFactory.create()
+    user_one_email = user_one.email
+    user_two_email = user_two.email
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")
 
@@ -95,7 +97,7 @@ def test_get_stats_month(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test@gmail.com",
+        "email": user_one_email,
         "costs": 1355,
         "number_purchases": 2,
         "details": {
@@ -112,7 +114,7 @@ def test_get_stats_month(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test2@gmail.com",
+        "email": user_two_email,
         "costs": 0,
         "number_purchases": 0,
         "details": {},
@@ -129,7 +131,7 @@ def test_get_stats_month(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test@gmail.com",
+        "email": user_one_email,
         "costs": 0,
         "number_purchases": 0,
         "details": {
@@ -146,7 +148,7 @@ def test_get_stats_month(db):
     assert response.status_code == 200
     statistics = response.json()
     assert statistics == {
-        "email": "test@gmail.com",
+        "email": user_one_email,
         "costs": 100,
         "number_purchases": 1,
         "details": {
