@@ -5,10 +5,10 @@ from tests.factories.categories import CategoryFactory
 
 
 def test_create_item_for_user(db):
-    user = UserFactory.create(id=1, email="test@gmail.com", hashed_password="test89A")
+    user = UserFactory.create(email="test@gmail.com", hashed_password="test89A")
 
-    category_one = CategoryFactory.create(id=1, user_id=1, title="Accessories")
-    category_two = CategoryFactory.create(id=2, user_id=1, title="Food")
+    category_one = CategoryFactory.create(user_id=user.id, title="Accessories")
+    category_two = CategoryFactory.create(user_id=user.id, title="Food")
 
     response = client.post(
         f"/users/1/item/",
