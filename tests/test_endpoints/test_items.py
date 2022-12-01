@@ -5,7 +5,7 @@ from tests.factories.categories import CategoryFactory
 
 
 def test_create_item_for_user(db):
-    user = UserFactory.create(email="test@gmail.com", hashed_password="test89A")
+    user = UserFactory.create(email="test@gmail.com")
 
     category_one = CategoryFactory.create(user_id=user.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user.id, title="Food")

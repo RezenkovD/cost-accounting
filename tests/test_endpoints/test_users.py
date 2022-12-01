@@ -25,12 +25,8 @@ def test_create_user(db):
 
 
 def test_read_user(db):
-    user_one = UserFactory.create(
-        email="test@gmail.com", hashed_password="test89A"
-    )
-    user_two = UserFactory.create(
-        email="test2@gmail.com", hashed_password="test89B"
-    )
+    user_one = UserFactory.create(email="test@gmail.com")
+    user_two = UserFactory.create(email="test2@gmail.com")
 
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")
@@ -128,12 +124,8 @@ def test_read_user(db):
 
 
 def test_read_users(db):
-    user_one = UserFactory.create(
-        email="test@gmail.com", hashed_password="test89A"
-    )
-    user_two = UserFactory.create(
-        email="test2@gmail.com", hashed_password="test89B"
-    )
+    user_one = UserFactory.create(email="test@gmail.com")
+    user_two = UserFactory.create(email="test2@gmail.com")
 
     category_one = CategoryFactory.create(user_id=user_one.id, title="Accessories")
     category_two = CategoryFactory.create(user_id=user_one.id, title="Food")

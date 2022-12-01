@@ -4,7 +4,7 @@ from tests.factories.users import UserFactory
 
 
 def test_create_category_for_user(db):
-    user = UserFactory.create(email="test@gmail.com", hashed_password="test89A")
+    user = UserFactory.create(email="test@gmail.com")
 
     response = client.post(
         f"/users/category/",
