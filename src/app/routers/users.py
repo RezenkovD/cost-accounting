@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app import schemas
 from app.crud import crud_user
+from app.crud.crud_user import get_current_active_user
 from app.db import get_db
 
 router = APIRouter(
@@ -31,3 +32,8 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+
+@router.get("/me/", response_model=schemas.User)
+async def read_users_me(current_user: schemas.User = Depends(get_current_active_user)):
+    return current_user
