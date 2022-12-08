@@ -13,11 +13,20 @@ def create_user_item(db: Session, item: ItemCreate, user_id: int):
     db_item = Item(**item.dict())
     db_item.user_id = user_id
 
-    users = db.query(User).join(Category, Category.user_id == User.id).filter(Category.id == db_item.category_id).all()
+    users = (
+        db.query(User)
+        .join(Category, Category.user_id == User.id)
+        .filter(Category.id == db_item.category_id)
+        .all()
+    )
     if len(users) == 0:
-        raise HTTPException(status_code=404, detail="Invalid Category ID. None of the users have it.")
+        raise HTTPException(
+            status_code=404, detail="Invalid Category ID. None of the users have it."
+        )
     elif len(users) > 1:
-        raise HTTPException(status_code=404, detail="Several users have the same category.")
+        raise HTTPException(
+            status_code=404, detail="Several users have the same category."
+        )
     else:
         user = users[0]
     if user.id == db_item.user_id:
@@ -26,4 +35,6 @@ def create_user_item(db: Session, item: ItemCreate, user_id: int):
         db.refresh(db_item)
         return db_item
     else:
-        raise HTTPException(status_code=404, detail="The user is not the owner of this category.")
+        raise HTTPException(
+            status_code=404, detail="The user is not the owner of this category."
+        )
