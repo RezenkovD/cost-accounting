@@ -1,8 +1,6 @@
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app import schemas
-from app.crud.crud_user import get_current_active_user
 from app.models.category import Category
 from app.schemas.item import ItemCreate
 from app.models import Item, User
@@ -11,12 +9,10 @@ from app.models import Item, User
 def create_user_item(
     db: Session,
     item: ItemCreate,
-    current_user: schemas.User = Depends(get_current_active_user),
+    user_id: int,
 ):
-    if current_user is False:
-        raise HTTPException(status_code=404, detail="User not found")
     db_item = Item(**item.dict())
-    db_item.user_id = current_user.id
+    db_item.user_id = user_id
 
     users = (
         db.query(User)

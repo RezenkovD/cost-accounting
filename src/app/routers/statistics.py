@@ -50,7 +50,5 @@ def read_stats_month(
     db: Session = Depends(get_db),
 ):
     date_ = transform_date_or_422(filter_date)
-    statistics_month = crud_statistics.get_user_statistics(
-        db, user_id=current_user.id, filter_date=date_
-    )
+    statistics_month = crud_statistics.get_user_statistics(db, current_user.id, date_)
     return statistics_month

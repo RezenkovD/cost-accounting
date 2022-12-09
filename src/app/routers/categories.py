@@ -18,4 +18,4 @@ def create_category_for_user(
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    return crud_category.create_user_category(db, category, current_user)
+    return crud_category.create_user_category(db, category, current_user.id)

@@ -10,9 +10,9 @@ from app.models import Category
 def create_user_category(
     db: Session,
     category: CategoryBase,
-    current_user: schemas.User = Depends(get_current_active_user),
+    user_id: int,
 ):
-    db_category = Category(title=category.title, user_id=current_user.id)
+    db_category = Category(title=category.title, user_id=user_id)
     db.add(db_category)
     db.commit()
     db.refresh(db_category)

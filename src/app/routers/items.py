@@ -18,4 +18,4 @@ def create_item_for_user(
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    return create_user_item(db, item, current_user)
+    return create_user_item(db, item, current_user.id)
