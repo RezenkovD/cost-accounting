@@ -5,7 +5,7 @@ from app import schemas
 from app.crud import crud_statistics
 from app.crud.crud_user import get_current_active_user
 from app.db import get_db
-from app.utils.utils import transform_date_or_422
+from app.utils import transform_date_or_422
 
 router = APIRouter(
     prefix="/users",
