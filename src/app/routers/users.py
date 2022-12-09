@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schemas.User)
+@router.post("/create-user/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud_user.get_user_by_email(db, email=user.email)
     if db_user:
@@ -20,12 +20,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud_user.create_user(db=db, user=user)
 
 
-@router.get("/", response_model=list[schemas.User])
+@router.get("/read-user/", response_model=schemas.User)
+def read_user(current_user: schemas.User = Depends(get_current_active_user)):
+    return current_user
+
+
+@router.get("/read-users/", response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud_user.get_users(db, skip=skip, limit=limit)
     return users
-
-
-@router.get("/read_me", response_model=schemas.User)
-def read_user(current_user: schemas.User = Depends(get_current_active_user)):
-    return current_user

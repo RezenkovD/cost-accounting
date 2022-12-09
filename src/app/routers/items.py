@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/item/", response_model=schemas.Item)
+@router.post("/create-item/", response_model=schemas.Item)
 def create_item_for_user(
     item: schemas.ItemCreate,
     current_user: schemas.User = Depends(get_current_active_user),

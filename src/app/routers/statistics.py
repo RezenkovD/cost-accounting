@@ -31,8 +31,8 @@ def transform_date_or_422(date_: str) -> date:
     return transformed_date
 
 
-@router.get("/statistics", response_model=schemas.Statistics)
-def get_stats(
+@router.get("/read-statistics/", response_model=schemas.Statistics)
+def read_stats(
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
@@ -41,10 +41,10 @@ def get_stats(
 
 
 @router.get(
-    "/{user_id}/statistics/{filter_date}",
+    "/read-statistics/{filter_date}/",
     response_model=schemas.Statistics,
 )
-def get_stats_month(
+def read_stats_month(
     filter_date: str,
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
