@@ -6,6 +6,7 @@ import logging
 
 from app import schemas
 from app.crud import crud_statistics
+from app.crud.crud_user import get_current_active_user
 from app.db import get_db
 
 
@@ -30,9 +31,12 @@ def transform_date_or_422(date_: str) -> date:
     return transformed_date
 
 
-@router.get("/{user_id}/statistics", response_model=schemas.Statistics)
-def get_stats(user_id: int, db: Session = Depends(get_db)):
-    statistics = crud_statistics.get_user_statistics(db, user_id=user_id)
+@router.get("/statistics", response_model=schemas.Statistics)
+def get_stats(
+    current_user: schemas.User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
+):
+    statistics = crud_statistics.get_user_statistics(db, current_user.id)
     return statistics
 
 
@@ -41,12 +45,12 @@ def get_stats(user_id: int, db: Session = Depends(get_db)):
     response_model=schemas.Statistics,
 )
 def get_stats_month(
-    user_id: int,
     filter_date: str,
+    current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
     date_ = transform_date_or_422(filter_date)
     statistics_month = crud_statistics.get_user_statistics(
-        db, user_id=user_id, filter_date=date_
+        db, user_id=current_user.id, filter_date=date_
     )
     return statistics_month
