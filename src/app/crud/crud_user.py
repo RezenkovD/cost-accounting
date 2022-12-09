@@ -38,9 +38,9 @@ def get_user_username(db: Session, email: str):
 def authenticate_user(db: Session, email: str, password: str):
     db_user = get_user_username(db, email)
     if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
+        return False
     if not verify_password(password, db_user.hashed_password):
-        raise HTTPException(status_code=404, detail="Invalid password")
+        return False
     return db_user
 
 
