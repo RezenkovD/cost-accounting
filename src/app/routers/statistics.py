@@ -1,34 +1,16 @@
-from fastapi import Depends, APIRouter, HTTPException
+from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
-
-from datetime import datetime, date
-import logging
 
 from app import schemas
 from app.crud import crud_statistics
 from app.crud.crud_user import get_current_active_user
 from app.db import get_db
-
+from app.utils.utils import transform_date_or_422
 
 router = APIRouter(
     prefix="/users",
     tags=["statistics"],
 )
-
-
-def transform_date_or_422(date_: str) -> date:
-    """
-    '2021-01' -> datetime.date(2021, 01, 01) else raise HTTP_422
-    """
-    try:
-        transformed_date = datetime.strptime(date_, "%Y-%m").date().replace(day=1)
-    except ValueError:
-        logging.info(f"{date_} has incorrect date format")
-        raise HTTPException(
-            status_code=422,
-            detail=f"{date_} has incorrect date format, but should be YYYY-MM",
-        )
-    return transformed_date
 
 
 @router.get("/read-statistics/", response_model=schemas.Statistics)
