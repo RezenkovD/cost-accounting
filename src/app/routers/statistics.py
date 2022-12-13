@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/read-statistics/", response_model=schemas.Statistics)
+@router.get("/statistics/", response_model=schemas.Statistics)
 def read_stats(
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
@@ -23,7 +23,7 @@ def read_stats(
 
 
 @router.get(
-    "/read-statistics/{filter_date}/",
+    "/statistics/{filter_date}/",
     response_model=schemas.Statistics,
 )
 def read_stats_month(

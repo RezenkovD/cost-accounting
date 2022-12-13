@@ -1,5 +1,4 @@
 from fastapi import HTTPException, Depends
-from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from starlette import status
@@ -8,7 +7,7 @@ from app.crud.crud_token import SECRET_KEY, ALGORITHM
 from app.db import get_db
 from app.schemas import UserCreate, TokenData
 from app.models import User
-from app.utils import get_password_hash, verify_password
+from app.utils import get_password_hash, verify_password, oauth2_scheme
 
 
 def get_user(db: Session, user_id: int):
@@ -31,20 +30,14 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 
-def get_user_username(db: Session, email: str):
-    return db.query(User).filter_by(email=email).one_or_none()
-
-
 def authenticate_user(db: Session, email: str, password: str):
-    db_user = get_user_username(db, email)
+    db_user = get_user_by_email(db, email)
     if not db_user:
         return False
     if not verify_password(password, db_user.hashed_password):
         return False
     return db_user
 
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
@@ -60,7 +53,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user_username(db, email=token_data.username)
+    user = get_user_by_email(db, email=token_data.username)
     if user is None:
         raise credentials_exception
     return user

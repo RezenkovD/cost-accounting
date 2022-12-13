@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.post("/create-category/", response_model=schemas.Category)
+@router.post("/category/", response_model=schemas.Category)
 def create_category_for_user(
     category: schemas.CategoryBase,
     current_user: schemas.User = Depends(get_current_active_user),
