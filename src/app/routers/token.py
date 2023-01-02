@@ -5,9 +5,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from starlette import status
 from sqlalchemy.orm import Session
 
-from app.crud import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user
+from app.crud import create_access_token, authenticate_user
 from app.schemas import Token
 from app.db import get_db
+from app.utils import ACCESS_TOKEN_EXPIRE_MINUTES
+
 
 router = APIRouter(
     prefix="/token",

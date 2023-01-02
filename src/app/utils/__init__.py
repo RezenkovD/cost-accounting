@@ -5,4 +5,5 @@ from .utils import (
     SECRET_KEY,
     ALGORITHM,
     oauth2_scheme,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
 )
