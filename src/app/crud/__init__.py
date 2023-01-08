@@ -8,4 +8,4 @@ from .crud_user import (
     create_user,
     authenticate_user,
 )
-from .crud_token import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from .crud_token import create_access_token
