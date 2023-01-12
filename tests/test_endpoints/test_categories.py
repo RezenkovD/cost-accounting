@@ -1,25 +1,30 @@
 from tests.conftest import client
 
-from tests.factories.users import UserFactory
 
-
-def test_create_category_for_user(db):
-    user = UserFactory.create()
+def test_create_category_for_user(session):
+    response = client.post(
+        "/users/", json={"email": "test1@gmail.com", "password": "testA89"}
+    )
+    data = response.json()
+    user_id = data["id"]
 
     response = client.post(
-        f"/users/category/",
-        json={"title": "Accessories", "user_id": 1},
+        "/token/",
+        data={
+            "username": "test1@gmail.com",
+            "password": "testA89",
+        },
+        headers={"content-type": "application/x-www-form-urlencoded"},
     )
-    assert response.status_code == 200
-    category = response.json()
-    assert category["title"] == "Accessories"
-    assert category["user_id"] == 1
+    data_token = response.json()
+    token = data_token["access_token"]
 
     response = client.post(
-        f"/users/category/",
-        json={"title": "Food", "user_id": 1},
+        "/users/category/",
+        json={"title": "Gym"},
+        headers={"Authorization": "Bearer " + token},
     )
     assert response.status_code == 200
-    category = response.json()
-    assert category["title"] == "Food"
-    assert category["user_id"] == 1
+    data_category = response.json()
+    category_id = data_category["id"]
+    assert data_category == {"title": "Gym", "id": category_id, "user_id": user_id}
