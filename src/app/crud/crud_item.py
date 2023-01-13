@@ -1,9 +1,15 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 
+from app.crud.crud_user import get_current_user
 from app.models.category import Category
 from app.schemas.item import ItemCreate
 from app.models import Item, User
+
+
+def read_items_for_user(db: Session, current_user: User = Depends(get_current_user)):
+    user_id = current_user.id
+    return db.query(Item).filter_by(user_id=user_id).all()
 
 
 def create_user_item(
