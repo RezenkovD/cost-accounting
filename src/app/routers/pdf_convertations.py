@@ -15,6 +15,7 @@ from app.crud import crud_statistics
 from app.crud.crud_item import read_items_for_user
 from app.crud.crud_user import get_current_active_user
 from app.db import get_db
+from app.utils import transform_date_or_422
 
 router = APIRouter(
     prefix="/pdf-convertation",
@@ -26,21 +27,29 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/user-history/")
 def pdf_convertation_user_history(
+    filter_date: str = None,
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
-    data_user_stats = crud_statistics.get_user_statistics(db, current_user.id)
+    if filter_date is not None:
+        date_ = transform_date_or_422(filter_date)
+        data_user_stats = crud_statistics.get_user_statistics(
+            db, current_user.id, date_
+        )
+        list_items = read_items_for_user(db, current_user, date_)
+    else:
+        data_user_stats = crud_statistics.get_user_statistics(db, current_user.id)
+        list_items = read_items_for_user(db, current_user)
+
     data_user_stats = data_user_stats.__dict__
-
     today_date = {"today_date": datetime.today().strftime("%d %b, %Y")}
-    data_user_stats.update(today_date)
 
-    list_items = read_items_for_user(db, current_user)
+    data_user_stats.update(today_date)
     data_user_stats.update({"items": list_items})
 
     template_loader = jinja2.FileSystemLoader("templates/")
     template_env = jinja2.Environment(loader=template_loader)
-    html_template = "basic-template.html"
+    html_template = "user-history-template.html"
     template = template_env.get_template(html_template)
     output = template.render(data_user_stats)
 

@@ -1,15 +1,35 @@
 from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import extract, and_
+from typing import Optional
 
 from app.crud.crud_user import get_current_user
 from app.models.category import Category
 from app.schemas.item import ItemCreate
 from app.models import Item, User
+from pydantic.schema import date
 
 
-def read_items_for_user(db: Session, current_user: User = Depends(get_current_user)):
+def read_items_for_user(
+    db: Session,
+    current_user: User = Depends(get_current_user),
+    filter_date: Optional[date] = None,
+):
     user_id = current_user.id
-    return db.query(Item).filter_by(user_id=user_id).all()
+    if filter_date is not None:
+        return (
+            db.query(Item)
+            .filter(
+                and_(
+                    Item.user_id == user_id,
+                    extract("year", Item.time) == filter_date.year,
+                    extract("month", Item.time) == filter_date.month,
+                )
+            )
+            .all()
+        )
+    else:
+        return db.query(Item).filter_by(user_id=user_id).all()
 
 
 def create_user_item(
