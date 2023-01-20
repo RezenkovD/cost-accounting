@@ -36,7 +36,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        { % for x in range(number_purchases) % }
+                        {% for x in range(number_purchases) %}
                         <tr>
                            <td>
                               <span class="text-inverse">{{ items[x].description }}</span><br>
@@ -46,7 +46,7 @@
                            <td>{{ items[x].time.strftime("%Y-%m-%d %H:%M") }}</td>
                            <td class="text-right">{{ items[x].price }} ₴</td>
                         </tr>
-                        {% endfor %}
+                        {%endfor%}
                      </tbody>
                   </table>
                </div>
@@ -61,7 +61,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        { % for x in number_purchases_category % }
+                        {% for x in number_purchases_category %}
                         <tr>
                            <td>
                               <span class="text-inverse">{{ x }}</span><br>
@@ -70,7 +70,7 @@
                            <td class="text-center">{{ number_purchases_category[x] }}</td>
                            <td class="text-right">{{ details[x] }} ₴</td>
                         </tr>
-                        {% endfor %}
+                        {%endfor%}
                      </tbody>
                   </table>
                </div>

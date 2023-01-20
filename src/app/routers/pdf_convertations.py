@@ -36,19 +36,18 @@ async def get_task_status(task_id: str):
 
 @router.post("/")
 async def pdf_convert(
-    filter_date: Optional[str],
+    filter_date: Optional[str] = None,
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
+    date_ = None
     if filter_date is not None:
         date_ = transform_date_or_422(filter_date)
-        data_user_stats = crud_statistics.get_user_statistics(
-            db, current_user.id, date_
-        )
-        list_items = read_items_for_user(db, current_user, date_)
-    else:
-        data_user_stats = crud_statistics.get_user_statistics(db, current_user.id)
-        list_items = read_items_for_user(db, current_user)
+
+    data_user_stats = crud_statistics.get_user_statistics(
+        db, current_user.id, date_
+    )
+    list_items = read_items_for_user(db, current_user, date_)
 
     data_user_stats = data_user_stats.__dict__
     today_date = {"today_date": datetime.today().strftime("%d %b, %Y")}
