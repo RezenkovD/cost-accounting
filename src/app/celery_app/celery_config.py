@@ -2,13 +2,11 @@ import os
 
 from celery import Celery
 
-BACKEND = os.getenv("BACKEND")
-BROKER = os.getenv("BROKER")
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 
 celery_app = Celery(
     "main",
-    backend=BACKEND,
-    broker=BROKER,
+    broker=CELERY_BROKER_URL,
     include=["app.celery_app.tasks"],
 )
 

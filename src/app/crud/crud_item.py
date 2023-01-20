@@ -2,12 +2,12 @@ from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import extract, and_
 from typing import Optional
+from pydantic.schema import date
 
 from app.crud.crud_user import get_current_user
 from app.models.category import Category
 from app.schemas.item import ItemCreate
 from app.models import Item, User
-from pydantic.schema import date
 
 
 def read_items_for_user(

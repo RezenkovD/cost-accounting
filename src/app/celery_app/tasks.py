@@ -7,7 +7,7 @@ from app.celery_app.celery_config import celery_app
 
 @celery_app.task
 def pdf_convertation_user_history(output):
-    config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF)
+    config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_PATH)
     pdf_file = pdfkit.from_string(
         output,
         False,

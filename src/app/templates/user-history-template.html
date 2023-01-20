@@ -15,11 +15,11 @@
             <div class="invoice-header">
                <div class="invoice-from">
                   <small>Email</small><br>
-                  <strong>{{email}}</strong>
+                  <strong>{{ email }}</strong>
                </div>
                <div class="invoice-date">
                   <small>Date of issued</small>
-                  <div class="date text-inverse m-t-5">{{today_date}}</div>
+                  <div class="date text-inverse m-t-5">{{ today_date }}</div>
                   <div class="invoice-detail">
                   </div>
                </div>
@@ -36,15 +36,15 @@
                         </tr>
                      </thead>
                      <tbody>
-                        {% for x in range(number_purchases) %}
+                        { % for x in range(number_purchases) % }
                         <tr>
                            <td>
-                              <span class="text-inverse">{{items[x].description}}</span><br>
+                              <span class="text-inverse">{{ items[x].description }}</span><br>
                               <small></small>
                            </td>
-                           <td class="text-center">{{items[x].id}}</td>
-                           <td>{{items[x].time.strftime("%Y-%m-%d %H:%M")}}</td>
-                           <td class="text-right">{{items[x].price}} ₴</td>
+                           <td class="text-center">{{ items[x].id }}</td>
+                           <td>{{ items[x].time.strftime("%Y-%m-%d %H:%M") }}</td>
+                           <td class="text-right">{{ items[x].price }} ₴</td>
                         </tr>
                         {% endfor %}
                      </tbody>
@@ -61,14 +61,14 @@
                         </tr>
                      </thead>
                      <tbody>
-                        {% for x in number_purchases_category %}
+                        { % for x in number_purchases_category % }
                         <tr>
                            <td>
-                              <span class="text-inverse">{{x}}</span><br>
+                              <span class="text-inverse">{{ x }}</span><br>
                               <small></small>
                            </td>
-                           <td class="text-center">{{number_purchases_category[x]}}</td>
-                           <td class="text-right">{{details[x]}} ₴</td>
+                           <td class="text-center">{{ number_purchases_category[x] }}</td>
+                           <td class="text-right">{{ details[x] }} ₴</td>
                         </tr>
                         {% endfor %}
                      </tbody>
@@ -79,7 +79,7 @@
                   <div class="invoice-price-left">
                      <div class="invoice-price-row">
                         <div class="sub-price">
-                           <span class="text-inverse">TOTAL PURCHASES : {{number_purchases}}</span><br>
+                           <span class="text-inverse">TOTAL PURCHASES : {{ number_purchases }}</span><br>
                         </div>
                         <div class="sub-price">
                            <i class="fa fa-plus text-muted"></i>
@@ -88,7 +88,7 @@
                   </div>
                   <div class="invoice-price-right">
                      <div class="sub-price"><small>TOTAL</small></div>
-                     <span class="f-w-600">{{costs}} ₴</span>
+                     <span class="f-w-600">{{ costs }} ₴</span>
                   </div>
                </div>
             </div>

@@ -1,11 +1,12 @@
-import jinja2
+from datetime import datetime
 
 from celery.result import AsyncResult
-from datetime import datetime
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse, StreamingResponse
 from starlette.templating import Jinja2Templates
+from typing import Optional
+import jinja2
 
 from app import schemas
 from app.celery_app.tasks import pdf_convertation_user_history
@@ -35,7 +36,7 @@ async def get_task_status(task_id: str):
 
 @router.post("/")
 async def pdf_convert(
-    filter_date: str = None,
+    filter_date: Optional[str],
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
