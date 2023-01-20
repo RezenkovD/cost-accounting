@@ -1,11 +1,11 @@
 from datetime import datetime
+from typing import Optional
 
 from celery.result import AsyncResult
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse, StreamingResponse
 from starlette.templating import Jinja2Templates
-from typing import Optional
 import jinja2
 
 from app import schemas
