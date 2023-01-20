@@ -13,6 +13,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 3000
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+
 def get_password_hash(password):
     return pwd_context.hash(password)
 

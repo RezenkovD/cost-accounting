@@ -1,16 +1,14 @@
-import io
-
 import jinja2
-import pdfkit
 
+from celery.result import AsyncResult
 from datetime import datetime
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
-from starlette.responses import StreamingResponse
-from fastapi.templating import Jinja2Templates
+from starlette.responses import JSONResponse, StreamingResponse
+from starlette.templating import Jinja2Templates
 
 from app import schemas
-from app.config import settings
+from app.celery_app.tasks import pdf_convertation_user_history
 from app.crud import crud_statistics
 from app.crud.crud_item import read_items_for_user
 from app.crud.crud_user import get_current_active_user
@@ -25,8 +23,18 @@ router = APIRouter(
 templates = Jinja2Templates(directory="templates")
 
 
-@router.get("/user-history/")
-def pdf_convertation_user_history(
+@router.get("/{task_id}/")
+async def get_task_status(task_id: str):
+    task_result = AsyncResult(task_id)
+    return StreamingResponse(
+        task_result.result,
+        headers={"Content-Disposition": 'attachment; filename="my-history.pdf"'},
+        media_type="application/pdf",
+    )
+
+
+@router.post("/")
+async def pdf_convert(
     filter_date: str = None,
     current_user: schemas.User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
@@ -53,19 +61,6 @@ def pdf_convertation_user_history(
     template = template_env.get_template(html_template)
     output = template.render(data_user_stats)
 
-    config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF)
+    task = pdf_convertation_user_history.delay(output)
 
-    pdf_file = pdfkit.from_string(
-        output,
-        False,
-        configuration=config,
-        css="templates/static/style.css",
-        options={"enable-local-file-access": ""},
-    )
-    bytes_file = io.BytesIO(pdf_file)
-
-    return StreamingResponse(
-        bytes_file,
-        headers={"Content-Disposition": 'attachment; filename="my-history.pdf"'},
-        media_type="application/pdf",
-    )
+    return JSONResponse({"task_id": task.id})
