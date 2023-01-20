@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>Title</title>
+   <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+   <br>
+   <div>
+      <div>
+         <div class="invoice">
+            <div class="invoice-header">
+               <div class="invoice-from">
+                  <small>Email</small><br>
+                  <strong>{{ email }}</strong>
+               </div>
+               <div class="invoice-date">
+                  <small>Date of issued</small>
+                  <div class="date text-inverse m-t-5">{{ today_date }}</div>
+                  <div class="invoice-detail">
+                  </div>
+               </div>
+            </div>
+            <div class="invoice-content">
+               <div>
+                  <table>
+                     <thead>
+                        <tr>
+                           <th class="text-left">DESCRIPTION</th>
+                           <th class="text-center" width="10%">ID</th>
+                           <th class="text-center" width="10%">TIME</th>
+                           <th class="text-right" width="20%">PRICE</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for x in range(number_purchases) %}
+                        <tr>
+                           <td>
+                              <span class="text-inverse">{{ items[x].description }}</span><br>
+                              <small></small>
+                           </td>
+                           <td class="text-center">{{ items[x].id }}</td>
+                           <td>{{ items[x].time.strftime("%Y-%m-%d %H:%M") }}</td>
+                           <td class="text-right">{{ items[x].price }} ₴</td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+               <div class="invoice-footer"></div>
+               <div>
+                  <table>
+                     <thead>
+                        <tr>
+                           <th class="text-left">CATEGORY</th>
+                           <th class="text-center" width="10%">PURCHASES</th>
+                           <th class="text-right" width="20%">PRICE</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for x in number_purchases_category %}
+                        <tr>
+                           <td>
+                              <span class="text-inverse">{{ x }}</span><br>
+                              <small></small>
+                           </td>
+                           <td class="text-center">{{ number_purchases_category[x] }}</td>
+                           <td class="text-right">{{ details[x] }} ₴</td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+               <div><br></div>
+               <div class="invoice-price">
+                  <div class="invoice-price-left">
+                     <div class="invoice-price-row">
+                        <div class="sub-price">
+                           <span class="text-inverse">TOTAL PURCHASES : {{ number_purchases }}</span><br>
+                        </div>
+                        <div class="sub-price">
+                           <i class="fa fa-plus text-muted"></i>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="invoice-price-right">
+                     <div class="sub-price"><small>TOTAL</small></div>
+                     <span class="f-w-600">{{ costs }} ₴</span>
+                  </div>
+               </div>
+            </div>
+            <div class="invoice-footer">
+               <p class="text-center m-b-5 f-w-600">
+                  THANK YOU FOR USING OUR APP
+               </p>
+               <p class="text-center">
+                  <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i>rezenkovdmitro@gmail.com</span>
+               </p>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>

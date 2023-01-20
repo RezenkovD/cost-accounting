@@ -1,8 +1,5 @@
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from app import schemas
-from app.crud.crud_user import get_current_active_user
 from app.schemas import CategoryBase
 from app.models import Category
 
