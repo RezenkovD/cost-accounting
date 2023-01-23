@@ -1,7 +1,7 @@
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from app.crud import get_user
+from app.crud import get_user, get_user_statistics
 from app.models import Group, UsersGroup
 from app.schemas.groups import GroupCreate, GroupBase
 from app.utils import get_password_hash, verify_password
@@ -80,3 +80,18 @@ def check_user_group(db: Session, user_id: int, group_id: int):
         .filter(and_(UsersGroup.user_id == user_id, UsersGroup.group_id == group_id))
         .one_or_none()
     )
+
+
+def get_users_group_statistics(
+    db: Session,
+    group: GroupBase,
+    user_id: int,
+):
+    list_id_users_group = get_list_user_id_for_group(db, group, user_id)
+    if list_id_users_group:
+        list_stats = []
+        for x in range(len(list_id_users_group)):
+            list_stats.append(get_user_statistics(db, list_id_users_group[x]))
+        return list_stats
+    else:
+        return False
