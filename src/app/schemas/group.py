@@ -6,7 +6,7 @@ class GroupBase(BaseModel):
 
 
 class GroupCreate(GroupBase):
-    group_password: str
+    pass
 
 
 class Group(GroupBase):

@@ -1,4 +1,5 @@
 from .category import Category
 from .item import Item
 from .user import User
-from .groups import Group, UsersGroup
+from .group import Group, UserGroup
+from .invitation import Invitation
