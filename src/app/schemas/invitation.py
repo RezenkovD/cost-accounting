@@ -3,7 +3,7 @@ from pydantic.schema import datetime
 
 
 class InvitationBase(BaseModel):
-    sender_id: str
+    recipient_id: str
 
 
 class InvitationCreate(InvitationBase):
