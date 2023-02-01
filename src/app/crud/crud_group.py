@@ -1,16 +1,16 @@
-from typing import Union
-
+from fastapi import HTTPException
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from starlette import status
 
 from app.crud import get_user
 from app.models import Group, UserGroup
 
 
 def create_group(
-        db: Session,
-        group_title: str,
-        user_id: int,
+    db: Session,
+    group_title: str,
+    user_id: int,
 ) -> Group:
     db_group = Group(title=group_title)
     db.add(db_group)
@@ -35,12 +35,19 @@ def get_list_users_group(
     db: Session,
     user_id: int,
     group_id: int,
-) -> Union[list, bool]:
-    get_user_in_group = db.query(UserGroup).filter(and_(UserGroup.user_id == user_id, UserGroup.group_id == group_id)).one_or_none()
+) -> list:
+    get_user_in_group = (
+        db.query(UserGroup)
+        .filter(and_(UserGroup.user_id == user_id, UserGroup.group_id == group_id))
+        .one_or_none()
+    )
     if get_user_in_group:
         db_query = db.query(UserGroup).filter_by(group_id=group_id).all()
         list_id_user_group = [x.user_id for x in db_query]
         list_data_user_group = [get_user(db, x) for x in list_id_user_group]
         return list_data_user_group
     else:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="You are not in this group!",
+        )

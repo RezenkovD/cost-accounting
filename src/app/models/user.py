@@ -13,5 +13,4 @@ class User(Base):
 
     items = relationship("Item", back_populates="user")
     categories = relationship("Category", back_populates="user")
-    user_group = relationship("UserGroup", back_populates="user")
-    invitation = relationship("Invitation", back_populates="user")
+    user_groups = relationship("UserGroup", back_populates="user")

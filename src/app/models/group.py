@@ -11,6 +11,7 @@ class Group(Base):
     title = Column(String, nullable=False)
 
     user_group = relationship("UserGroup", back_populates="group")
+    invitations = relationship("Invitation", back_populates="group")
 
 
 class UserGroup(Base):
@@ -20,5 +21,5 @@ class UserGroup(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     group_id = Column(Integer, ForeignKey("groups.id"), nullable=False)
 
-    user = relationship("User", back_populates="user_group")
+    user = relationship("User", back_populates="user_groups")
     group = relationship("Group", back_populates="user_group")

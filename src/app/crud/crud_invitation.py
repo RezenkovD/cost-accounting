@@ -1,8 +1,10 @@
 import datetime
-from typing import Union
 
+from fastapi import HTTPException
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from starlette import status
+import starlette
 
 from app import schemas
 from app.crud import get_user
@@ -15,7 +17,7 @@ def response_to_invitation(
     invitation_id: int,
     user_id: int,
     status: str,
-) -> Union[schemas.Invitation, bool]:
+) -> schemas.Invitation:
     invitation = (
         db.query(Invitation)
         .filter(
@@ -28,7 +30,10 @@ def response_to_invitation(
         .one_or_none()
     )
     if invitation is None:
-        return False
+        raise HTTPException(
+            status_code=starlette.status.HTTP_404_NOT_FOUND,
+            detail="Invitation is not found",
+        )
     invitation.status = status
     db.commit()
     if status == "accepted":
@@ -39,7 +44,7 @@ def response_to_invitation(
 def get_invitation(
     db: Session,
     user_id: int,
-) -> Union[list[schemas.Invitation], bool]:
+) -> list[schemas.Invitation]:
     list_overdue_invitation = (
         db.query(Invitation)
         .filter(
@@ -54,7 +59,13 @@ def get_invitation(
     for invitation in list_overdue_invitation:
         invitation.status = "overdue"
         db.commit()
-    list_invitation = db.query(Invitation).filter(and_(Invitation.recipient_id == user_id, Invitation.status == "awaiting")).all()
+    list_invitation = (
+        db.query(Invitation)
+        .filter(
+            and_(Invitation.recipient_id == user_id, Invitation.status == "awaiting")
+        )
+        .all()
+    )
     return list_invitation
 
 
@@ -63,23 +74,48 @@ def create_invitation(
     user_id: int,
     recipient_id: int,
     group_id: int,
-) -> Union[schemas.Invitation, bool]:
+) -> schemas.Invitation:
     get_user_in_group = (
         db.query(UserGroup)
         .filter(and_(UserGroup.user_id == user_id, UserGroup.group_id == group_id))
         .one_or_none()
     )
     if get_user_in_group is None:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="You are not in this group!",
+        )
     if get_user(db, recipient_id) is None:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User is not found!",
+        )
     get_recipient_in_group = (
         db.query(UserGroup)
         .filter(and_(UserGroup.user_id == recipient_id, UserGroup.group_id == group_id))
         .one_or_none()
     )
     if get_recipient_in_group:
-        return False
+        raise HTTPException(
+            status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+            detail="The recipient is already in this group!",
+        )
+    get_invitation = (
+        db.query(Invitation)
+        .filter(
+            and_(
+                Invitation.status == "awaiting",
+                Invitation.recipient_id == recipient_id,
+                Invitation.group_id == group_id,
+            )
+        )
+        .one_or_none()
+    )
+    if get_invitation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The invitation has already been sent. Wait for a reply!",
+        )
     db_invitation = Invitation(
         status="awaiting",
         sender_id=user_id,
