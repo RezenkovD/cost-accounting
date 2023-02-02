@@ -9,7 +9,7 @@ import starlette
 from app import schemas
 from app.crud import get_user
 from app.crud.crud_group import add_user_in_group
-from app.models import Invitation, UserGroup
+from app.models import Invitation, UserGroup, StatusDB
 
 
 def response_to_invitation(
@@ -18,25 +18,26 @@ def response_to_invitation(
     user_id: int,
     status: str,
 ) -> schemas.Invitation:
-    invitation = (
-        db.query(Invitation)
-        .filter(
-            and_(
-                Invitation.recipient_id == user_id,
-                Invitation.status == "awaiting",
-                Invitation.id == invitation_id,
+    try:
+        invitation = (
+            db.query(Invitation)
+            .filter(
+                and_(
+                    Invitation.recipient_id == user_id,
+                    Invitation.status == StatusDB.AWAITING,
+                    Invitation.id == invitation_id,
+                )
             )
+            .one()
         )
-        .one_or_none()
-    )
-    if invitation is None:
+    except:
         raise HTTPException(
             status_code=starlette.status.HTTP_404_NOT_FOUND,
             detail="Invitation is not found",
         )
     invitation.status = status
     db.commit()
-    if status == "accepted":
+    if status == StatusDB.ACCEPTED:
         add_user_in_group(db=db, user_id=user_id, group_id=invitation.group_id)
     return invitation
 
@@ -50,19 +51,22 @@ def get_invitation(
         .filter(
             and_(
                 Invitation.recipient_id == user_id,
-                Invitation.status == "awaiting",
+                Invitation.status == StatusDB.AWAITING,
                 Invitation.time + datetime.timedelta(days=1) < datetime.datetime.now(),
             )
         )
         .all()
     )
     for invitation in list_overdue_invitation:
-        invitation.status = "overdue"
+        invitation.status = StatusDB.OVERDUE
         db.commit()
     list_invitation = (
         db.query(Invitation)
         .filter(
-            and_(Invitation.recipient_id == user_id, Invitation.status == "awaiting")
+            and_(
+                Invitation.recipient_id == user_id,
+                Invitation.status == StatusDB.AWAITING,
+            )
         )
         .all()
     )
@@ -85,7 +89,8 @@ def create_invitation(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="You are not in this group!",
         )
-    if get_user(db, recipient_id) is None:
+    get_recipient = get_user(db, recipient_id)
+    if get_recipient is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User is not found!",
@@ -104,7 +109,7 @@ def create_invitation(
         db.query(Invitation)
         .filter(
             and_(
-                Invitation.status == "awaiting",
+                Invitation.status == StatusDB.AWAITING,
                 Invitation.recipient_id == recipient_id,
                 Invitation.group_id == group_id,
             )

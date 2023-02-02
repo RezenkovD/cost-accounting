@@ -36,18 +36,19 @@ def get_list_users_group(
     user_id: int,
     group_id: int,
 ) -> list:
-    get_user_in_group = (
-        db.query(UserGroup)
-        .filter(and_(UserGroup.user_id == user_id, UserGroup.group_id == group_id))
-        .one_or_none()
-    )
-    if get_user_in_group:
-        db_query = db.query(UserGroup).filter_by(group_id=group_id).all()
-        list_id_user_group = [x.user_id for x in db_query]
-        list_data_user_group = [get_user(db, x) for x in list_id_user_group]
-        return list_data_user_group
-    else:
+    try:
+        get_user_in_group = (
+            db.query(UserGroup)
+            .filter(and_(UserGroup.user_id == user_id, UserGroup.group_id == group_id))
+            .one()
+        )
+    except:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="You are not in this group!",
         )
+    group_id = get_user_in_group.group_id
+    db_query = db.query(UserGroup).filter_by(group_id=group_id).all()
+    list_id_user_group = [x.user_id for x in db_query]
+    list_data_user_group = [get_user(db, x) for x in list_id_user_group]
+    return list_data_user_group

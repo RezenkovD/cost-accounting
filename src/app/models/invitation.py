@@ -11,7 +11,7 @@ class StatusDB(str, enum.Enum):
     AWAITING = "awaiting"
     ACCEPTED = "accepted"
     DENIED = "denied"
-    OVERDUE = "overdue"
+    OVERDUE = "OVERDUE"
 
 
 class StatusUser(str, enum.Enum):
