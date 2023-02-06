@@ -44,9 +44,7 @@ async def pdf_convert(
     if filter_date is not None:
         date_ = transform_date_or_422(filter_date)
 
-    data_user_stats = crud_statistics.get_user_statistics(
-        db, current_user.id, date_
-    )
+    data_user_stats = crud_statistics.get_user_statistics(db, current_user.id, date_)
     list_items = read_items_for_user(db, current_user, date_)
 
     data_user_stats = data_user_stats.__dict__
